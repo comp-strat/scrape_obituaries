@@ -116,14 +116,14 @@ Traceback (most recent call last):
 UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe2 in position 33952: invalid continuation byte
 ```
 
-This means you probably weren't being very polite to their servers. To prevent this, the default version of [the request script](https://github.com/comp-strat/scrape_obituaries/blob/main/obit_scraping/grab_batch.py) uses [the `requests` module](https://pypi.org/project/requests/) with short, random pauses (around 0.5 seconds) between HTML requests to avoid getting blocked by Legacy.com. This is pretty slow. But if you got blocked anyway, consider making the pause longer; the upper and lower bounds are set when `request_slow()` is defined. 
+This means you probably weren't being very polite to their servers. To prevent this, the default version of [the request script](obit_scraping/grab_batch.py) uses [the `requests` module](https://pypi.org/project/requests/) with short, random pauses (around 0.5 seconds) between HTML requests to avoid getting blocked by Legacy.com. This is pretty slow. But if you got blocked anyway, consider making the pause longer; the upper and lower bounds are set when `request_slow()` is defined. 
 
 If speed is what you're after, the above workflow can be parallelized with [`request_boost`](https://pypi.org/project/request-boost/). However, we haven't implemented that in this version just yet, though there is a parameter for this called `boosted` under the `ObitConfig` class of [`grab_batch.py`](obit_scraping/grab_batch.py). Using this boosted version would be much faster at runtime, but the ability to run this without getting blocked would require [proper proxy protection](https://free-proxy-list.net/). We haven't figured this out yet, but you're welcome to try implementing it--just note that your IP address might get blocked.
 
 
 ### 3. Postprocessing
 
-The code in [postprocessing](https://github.com/comp-strat/scrape_obituaries/tree/main/postprocessing) reads raw scraped data and outputs a processed dataset with location, funeral home, birth/death date, gender, ethnicity, and duplicate information. 
+The code in [postprocessing](postprocessing/) reads raw scraped data and outputs a processed dataset with location, funeral home, birth/death date, gender, ethnicity, and duplicate information. 
 
 #### Instructions
 
@@ -139,7 +139,7 @@ python3 postprocessing/processor.py 20150101-20150102 20221023-1632 test
 ```
 
 ## Output
-`processor.py` outputs the following files in [the `postprocessing` directory](https://github.com/comp-strat/scrape_obituaries/postprocessing):
+`processor.py` outputs the following files in [the `postprocessing` directory](postprocessing/):
 
 TWO final files
 1. Merged dataset with gender, location, race and date information ```{runname}-final_df-{year}.csv```
