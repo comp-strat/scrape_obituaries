@@ -2,14 +2,14 @@
 
 The general work flow is to run scripts in the following order:
 
-1. [URL scraping](https://github.com/comp-strat/obituaries_private/blob/main/url_scraping/url_scraper.py)
-2. [Obit scraping](https://github.com/comp-strat/obituaries_private/blob/main/obit_scraping/grabObitLinks.py)
-3. [Postprocessing](https://github.com/comp-strat/obituaries_private/blob/main/postprocessing/processor.py)
+1. [URL scraping](https://github.com/comp-strat/scrape_obituaries/blob/main/url_scraping/url_scraper.py)
+2. [Obit scraping](https://github.com/comp-strat/scrape_obituaries/blob/main/obit_scraping/grabObitLinks.py)
+3. [Postprocessing](https://github.com/comp-strat/scrape_obituaries/blob/main/postprocessing/processor.py)
 
 
 ### 1. URL scraping
 
-The code in [url_scraper.py](https://github.com/comp-strat/obituaries_private/blob/main/url_scraping/url_scraper.py) scrapes all obituary profile links between a given date range.  
+The code in [url_scraper.py](https://github.com/comp-strat/scrape_obituaries/blob/main/url_scraping/url_scraper.py) scrapes all obituary profile links between a given date range.  
 
 #### Instructions
 
@@ -39,12 +39,12 @@ Traceback (most recent call last):
 json.decoder.JSONDecodeError: Expecting property name enclosed in double quotes: line 1 column 2 (char 1)
 ```
 
-If this happens, consider inserting pauses into [the URL scraping script](https://github.com/comp-strat/obituaries_private/blob/main/url_scraping/url_scraper.py)--like inside the `while()` loop within the `get_all_urls()` function.
+If this happens, consider inserting pauses into [the URL scraping script](https://github.com/comp-strat/scrape_obituaries/blob/main/url_scraping/url_scraper.py)--like inside the `while()` loop within the `get_all_urls()` function.
 
 
 #### Output
 
-The output is stored in the [url_scraping](https://github.com/comp-strat/obituaries_private/tree/main/url_scraping) directory, in a folder named after the query date range. The .txt file itself is named using the timestamp that the script was run.
+The output is stored in the [url_scraping](https://github.com/comp-strat/scrape_obituaries/tree/main/url_scraping) directory, in a folder named after the query date range. The .txt file itself is named using the timestamp that the script was run.
 The general format is
 
 ```command line
@@ -61,7 +61,7 @@ For example, if the command above was run on 16th March 2022 9:30PM, the output 
 
 ### 2. Obituary scraping
 
-The code in [obit_scraping](https://github.com/comp-strat/obituaries_private/tree/main/obit_scraping) directory scrapes all obituary profiles from a URL list file inputted by the user. 
+The code in [obit_scraping](https://github.com/comp-strat/scrape_obituaries/tree/main/obit_scraping) directory scrapes all obituary profiles from a URL list file inputted by the user. 
 
 #### Instructions
 
@@ -116,30 +116,30 @@ Traceback (most recent call last):
 UnicodeDecodeError: 'utf-8' codec can't decode byte 0xe2 in position 33952: invalid continuation byte
 ```
 
-This means you probably weren't being very polite to their servers. To prevent this, the default version of [the request script](https://github.com/comp-strat/obituaries_private/blob/main/obit_scraping/grabObitLinks.py) uses [the `requests` module](https://pypi.org/project/requests/) with short, random pauses (around 0.5 seconds) between HTML requests to avoid getting blocked by Legacy.com. This is pretty slow. But if you got blocked anyway, consider making the pause longer; the upper and lower bounds are set when `request_slow()` is defined. 
+This means you probably weren't being very polite to their servers. To prevent this, the default version of [the request script](https://github.com/comp-strat/scrape_obituaries/blob/main/obit_scraping/grab_batch.py) uses [the `requests` module](https://pypi.org/project/requests/) with short, random pauses (around 0.5 seconds) between HTML requests to avoid getting blocked by Legacy.com. This is pretty slow. But if you got blocked anyway, consider making the pause longer; the upper and lower bounds are set when `request_slow()` is defined. 
 
-If speed is what you're after, the above workflow can be parallelized with [`request_boost`](https://pypi.org/project/request-boost/). However, we haven't implemented that in this version just yet, though there is a parameter for this called `boosted` under the `ObitConfig` class of [`grab_batch.py`](grab_batch.py). Using this boosted version would be much faster at runtime, but the ability to run this without getting blocked would require [proper proxy protection](https://free-proxy-list.net/). We haven't figured this out yet, but you're welcome to try implementing it--just note that your IP address might get blocked.
+If speed is what you're after, the above workflow can be parallelized with [`request_boost`](https://pypi.org/project/request-boost/). However, we haven't implemented that in this version just yet, though there is a parameter for this called `boosted` under the `ObitConfig` class of [`grab_batch.py`](obit_scraping/grab_batch.py). Using this boosted version would be much faster at runtime, but the ability to run this without getting blocked would require [proper proxy protection](https://free-proxy-list.net/). We haven't figured this out yet, but you're welcome to try implementing it--just note that your IP address might get blocked.
 
 
 ### 3. Postprocessing
 
-The code in [postprocessing](https://github.com/comp-strat/obituaries_private/tree/main/postprocessing) reads raw scraped data and outputs a processed dataset with location, funeral home, birth/death date, gender, ethnicity, and duplicate information. 
+The code in [postprocessing](https://github.com/comp-strat/scrape_obituaries/tree/main/postprocessing) reads raw scraped data and outputs a processed dataset with location, funeral home, birth/death date, gender, ethnicity, and duplicate information. 
 
 #### Instructions
 
 Our main file is `processor.py`, which runs the postprocessing and duplicate identification workflow. Our main file is `processor.py`, which runs the post-processing and duplicate identification workflow. 
 
-**IMPORTANT: Run `processor.py` under the top-level `obituaries_private/` directory. **
+**IMPORTANT: Run `processor.py` under the top-level `scrape_obituaries/` directory. **
 
 The script assumes batched scraped data is already stored under `/mnt/ceph/obit_storage`.
 
-For example, if we want to post-process scraped data from January 1st, 2015 to January 2nd, 2015 (20150101-20150102), queried on October 23rd, 2022 16:32 (20221023-1632), with runname 'test', then we would run the following command in the terminal under the `obituaries_private/` directory: 
+For example, if we want to post-process scraped data from January 1st, 2015 to January 2nd, 2015 (20150101-20150102), queried on October 23rd, 2022 16:32 (20221023-1632), with runname 'test', then we would run the following command in the terminal under the `scrape_obituaries/` directory: 
 ```bash
 python3 postprocessing/processor.py 20150101-20150102 20221023-1632 test
 ```
 
 ## Output
-`processor.py` outputs the following files in [the `postprocessing` directory](https://github.com/comp-strat/obituaries_private/postprocessing):
+`processor.py` outputs the following files in [the `postprocessing` directory](https://github.com/comp-strat/scrape_obituaries/postprocessing):
 
 TWO final files
 1. Merged dataset with gender, location, race and date information ```{runname}-final_df-{year}.csv```
