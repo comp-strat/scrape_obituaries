@@ -13,7 +13,7 @@ This study aims (1) to evaluate the feasibility and accuracy of using open-sourc
 
 ## Instructions
 
-1. Familiarize yourself with the environments for this codebase using the [environments guide](ENVIRONMENTS.md) (you may have to install things).
-2. Install things by following the [kickstart guide to setup and installations](SETUP.md). 
+First, install things by following the [kickstart guide to setup and installations](SETUP.md). 
   - Note that there are a few special setup steps for [SUTime](https://github.com/FraBle/python-sutime) (which [require Maven](https://maven.apache.org/install.html)) and SpaCy (namely `python3 -m spacy download en_core_web_sm`). Everything else can be handled by creating a virtual environment and running `pip3 install -r requirements.txt`.
-3. Execute the code for each step by following the [run instructions](RUN_SCRIPTS.md). The three steps are url scraping, obituary scraping, and  postprocessing. 
+
+Then execute the code for each step by following the [run instructions](RUN_SCRIPTS.md). The three steps are url scraping, obituary scraping, and  postprocessing.
