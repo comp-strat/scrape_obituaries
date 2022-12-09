@@ -1,0 +1,7 @@
+*.csv filter=lfs diff=lfs merge=lfs -text
+*.bz2 filter=lfs diff=lfs merge=lfs -text
+*.gz filter=lfs diff=lfs merge=lfs -text
+*.zip filter=lfs diff=lfs merge=lfs -text
+*.pkl filter=lfs diff=lfs merge=lfs -text
+postprocessing/*_postprocessed/* filter=lfs diff=lfs merge=lfs -text
+obit_scraping/all_results/* filter=lfs diff=lfs merge=lfs -text

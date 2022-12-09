@@ -1,0 +1,9 @@
+{
+	"ip": "149.165.171.143",
+	"user": "rmathur",
+	"ssh_path": "/home/rohan/.ssh/id_ed25519",
+	"obits_dest_dir": "/mnt/ceph/obits_storage/obits_test",
+	"scrape_id": "20150101-20150102_20221023-1632",
+	"batch_size": 30,
+	"start_batch": 0
+}
